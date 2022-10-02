@@ -12,6 +12,9 @@
     <div id="globeViz"></div>
   
     <script>
+        const colorScale = d3.scaleOrdinal(['orangered', 'mediumblue', 'darkgreen', 'yellow']);
+
+
       // Gen random data
       const N = 300;
       const gData = [...Array(N).keys()].map(() => ({
