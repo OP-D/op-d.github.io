@@ -194,6 +194,7 @@
         .labelDotOrientation(d => labelsTopOrientation.has(d.label) ? 'top' : 'bottom')
         .labelColor(d => colorScale(d.agency))
         .labelsData(landers)
+        .labelSize(1)
         .ringsData(gData)
         .ringColor(() => colorInterpolator)
         .ringMaxRadius('maxR')
