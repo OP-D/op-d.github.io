@@ -16,26 +16,7 @@
     <script>
         const colorScale = d3.scaleOrdinal(['orangered', 'mediumblue', 'darkgreen', 'yellow']);
         const labelsTopOrientation = new Set(['Apollo 12', 'Luna 2', 'Luna 20', 'Luna 21', 'Luna 24', 'LCROSS Probe']); // avoid label collisions
-
-
-      // Gen random data
-      const N = 300;
-      const gData = [...Array(N).keys()].map(() => ({
-        lat: (Math.random() - 0.5) * 180,
-        lng: (Math.random() - 0.5) * 360,
-        size: Math.random() / 3,
-        color: ['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)]
-      }));
-  
-      GlobeAR()
-        .globeImageUrl('mobile_map.jpg')
-        .bumpImageUrl('mobile_displacement.jpg')
-        .labelText('label')
-        .labelSize(1.7)
-        .labelDotRadius(0.4)
-        .labelDotOrientation(d => labelsTopOrientation.has(d.label) ? 'top' : 'bottom')
-        .labelColor(d => colorScale(d.agency))
-        .labelsData([
+        const landers = [
   {
     "lat": 0.6737,
     "lng": 23.47295,
@@ -189,7 +170,33 @@
     "date": "2019-1-3",
     "url": "https://en.wikipedia.org/wiki/Chang%27e_4"
   }
-])
+];
+
+    let gData = []; 
+      lands.forEach(probes => {
+        gData.push({
+          lat: probes.lat,
+          lng: probes.lng,
+          maxR: 5,
+          propagationSpeed: 1,
+          repeatPeriod: 1000
+        });
+      });
+
+      GlobeAR()
+        .globeImageUrl('mobile_map.jpg')
+        .bumpImageUrl('mobile_displacement.jpg')
+        .labelText('label')
+        .labelSize(1.7)
+        .labelDotRadius(0.4)
+        .labelDotOrientation(d => labelsTopOrientation.has(d.label) ? 'top' : 'bottom')
+        .labelColor(d => colorScale(d.agency))
+        .labelsData(landers)
+        .ringsData(gData)
+        .ringColor(() => colorInterpolator)
+        .ringMaxRadius('maxR')
+        .ringPropagationSpeed('propagationSpeed')
+        .ringRepeatPeriod('repeatPeriod')
       (document.getElementById('globeViz'))
   
     </script>
