@@ -29,13 +29,6 @@
         .labelDotRadius(0.4)
         .labelDotOrientation(d => labelsTopOrientation.has(d.label) ? 'top' : 'bottom')
         .labelColor(d => colorScale(d.agency))
-        .labelsLabel(d => `
-        <div style="background-color: black;padding: 10px; border-radius: 5px;">
-            <div><b>${d.label}</b></div>
-            <div>${d.agency} - ${d.program} Program</div>
-            <div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div>
-          </div>
-            `)
         .labelsData([
   {
     "lat": 0.6737,
