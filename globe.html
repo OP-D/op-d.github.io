@@ -298,7 +298,7 @@
 
 
     const globeMaterial = globe.globeMaterial();
-    globeMaterial.bumpScale = 500;
+    globeMaterial.bumpScale = 10;
     new THREE.TextureLoader().load('mobile_displacement.jpg', texture => {
         globeMaterial.specularMap = texture;
         globeMaterial.specular = new THREE.Color('grey');
