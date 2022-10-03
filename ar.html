@@ -47,15 +47,6 @@
         })
         .labelsData(moonquakes)
         .pointsData(moonquakes)
-        .pointLabel(d => `
-        <div style="background-color: black;padding: 10px; border-radius: 5px;">
-           <div><b>Moonquake Year - ${d.Year}</b></div>
-           <div>${d.Comments}</div>
-           <div>Lat,Lng: <i>${d.lat},${d.lng}</i></div>
-           <div>Period: <i>${d.Day} Days ${d.H} Hours ${d.M} Minutes ${d.S} Seconds</i></div>
-           <div>Magnitude: <i>${d.Magnitude}</i></div>
-        </div>
-        `)
         .pointColor(d => {
             if(d.Magnitude >= 2.5) return "red"
             if(d.Magnitude <= 1.5) return "white"
