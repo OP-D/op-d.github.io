@@ -256,8 +256,8 @@
 
       
       const globe = Globe()
-        .globeImageUrl('map.png')
-        .bumpImageUrl('ldem_64.png')
+        .globeImageUrl('mobile_map.jpg')
+        .bumpImageUrl('mobile_displacement.jpg')
         .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
         .ringsData(gData)
         .ringColor(() => colorInterpolator)
@@ -300,7 +300,7 @@
 
         const globeMaterial = globe.globeMaterial();
         globeMaterial.bumpScale = 500;
-        new THREE.TextureLoader().load('ldem_64.png', texture => {
+        new THREE.TextureLoader().load('mobile_displacement.jpg', texture => {
           globeMaterial.specularMap = texture;
           globeMaterial.specular = new THREE.Color('grey');
           globeMaterial.shininess = 0;
