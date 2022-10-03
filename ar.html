@@ -13,11 +13,11 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-L9XZ545ECN"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-      gtag('config', 'G-L9XZ545ECN');
+        gtag('config', 'G-L9XZ545ECN');
     </script>
     <!--<script src="../../dist/globe-ar.js"></script>-->
 </head>
@@ -30,187 +30,37 @@
     const labelsTopOrientation = new Set(['Apollo 12', 'Luna 2', 'Luna 20', 'Luna 21', 'Luna 24', 'LCROSS Probe']); // avoid label collisions
     const colorInterpolator = t => `rgba(255,100,50,${Math.sqrt(1 - t)})`;
 
-    const landers = [
-        {
-            "lat": 0.6737,
-            "lng": 23.47295,
-            "label": "Apollo 11",
-            "program": "Apollo",
-            "agency": "NASA",
-            "date": "1969-7-20",
-            "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_11_30th.html"
-        },
-        {
-            "lat": -3.01184,
-            "lng": -23.42156,
-            "label": "Apollo 12",
-            "program": "Apollo",
-            "agency": "NASA",
-            "date": "1969-11-19",
-            "url": "https://en.wikipedia.org/wiki/Apollo_12"
-        },
-        {
-            "lat": -3.64450,
-            "lng": -17.47753,
-            "label": "Apollo 14",
-            "program": "Apollo",
-            "agency": "NASA",
-            "date": "1971-2-5",
-            "url": "https://en.wikipedia.org/wiki/Apollo_14"
-        },
-        {
-            "lat": 26.13407,
-            "lng": 3.62981,
-            "label": "Apollo 15",
-            "program": "Apollo",
-            "agency": "NASA",
-            "date": "1971-7-30",
-            "url": "https://en.wikipedia.org/wiki/Apollo_15"
-        },
-        {
-            "lat": -8.97477,
-            "lng": 15.49749,
-            "label": "Apollo 16",
-            "program": "Apollo",
-            "agency": "NASA",
-            "date": "1972-4-21",
-            "url": "https://en.wikipedia.org/wiki/Apollo_16"
-        },
-        {
-            "lat": 20.18935,
-            "lng": 30.76996,
-            "label": "Apollo 17",
-            "program": "Apollo",
-            "agency": "NASA",
-            "date": "1972-12-11",
-            "url": "https://en.wikipedia.org/wiki/Apollo_17"
-        },
-        {
-            "lat": 29.1,
-            "lng": 0,
-            "label": "Luna 2",
-            "program": "Luna",
-            "agency": "Soviet Space Program",
-            "date": "1959-9-13",
-            "url": "https://en.wikipedia.org/wiki/Luna_2"
-        },
-        {
-            "lat": 7.08,
-            "lng": -64.37,
-            "label": "Luna 9",
-            "program": "Luna",
-            "agency": "Soviet Space Program",
-            "date": "1966-2-3",
-            "url": "https://en.wikipedia.org/wiki/Luna_9"
-        },
-        {
-            "lat": 18.87,
-            "lng": -62.05,
-            "label": "Luna 13",
-            "program": "Luna",
-            "agency": "Soviet Space Program",
-            "date": "1966-12-24",
-            "url": "https://en.wikipedia.org/wiki/Luna_13"
-        },
-        {
-            "lat": -0.68,
-            "lng": 56.3,
-            "label": "Luna 16",
-            "program": "Luna",
-            "agency": "Soviet Space Program",
-            "date": "1970-9-20",
-            "url": "https://en.wikipedia.org/wiki/Luna_16"
-        },
-        {
-            "lat": 38.28,
-            "lng": -35,
-            "label": "Luna 17",
-            "program": "Luna",
-            "agency": "Soviet Space Program",
-            "date": "1970-11-17",
-            "url": "https://en.wikipedia.org/wiki/Luna_17"
-        },
-        {
-            "lat": 3.57,
-            "lng": 56.5,
-            "label": "Luna 20",
-            "program": "Luna",
-            "agency": "Soviet Space Program",
-            "date": "1972-2-21",
-            "url": "https://en.wikipedia.org/wiki/Luna_20"
-        },
-        {
-            "lat": 25.51,
-            "lng": 30.38,
-            "label": "Luna 21",
-            "program": "Luna",
-            "agency": "Soviet Space Program",
-            "date": "1973-1-15",
-            "url": "https://en.wikipedia.org/wiki/Luna_21"
-        },
-        {
-            "lat": 12.25,
-            "lng": 62.2,
-            "label": "Luna 24",
-            "program": "Luna",
-            "agency": "Soviet Space Program",
-            "date": "1976-8-18",
-            "url": "https://en.wikipedia.org/wiki/Luna_24"
-        },
-        {
-            "lat": -84.72,
-            "lng": -49.62,
-            "label": "LCROSS Probe",
-            "program": "Lunar Crater Observation and Sensing Satellite",
-            "agency": "NASA",
-            "date": "2009-10-9",
-            "url": "https://en.wikipedia.org/wiki/LCROSS"
-        },
-        {
-            "lat": 44.12,
-            "lng": 19.51,
-            "label": "Chang'e 3",
-            "program": "Chinese Lunar Exploration",
-            "agency": "CNSA",
-            "date": "2013-12-14",
-            "url": "https://en.wikipedia.org/wiki/Chang%27e_3"
-        },
-        {
-            "lat": -45.4446,
-            "lng": 177.5991,
-            "label": "Chang'e 4",
-            "program": "Chinese Lunar Exploration",
-            "agency": "CNSA",
-            "date": "2019-1-3",
-            "url": "https://en.wikipedia.org/wiki/Chang%27e_4"
-        }
-    ];
+    const moonquakes = [{"Year":1971,"Day":107,"H":7,"M":0,"S":55,"lat":48,"lng":35,"Magnitude":2.8,"Comments":""},{"Year":1971,"Day":140,"H":17,"M":25,"S":10,"lat":42,"lng":-24,"Magnitude":2,"Comments":""},{"Year":1971,"Day":192,"H":13,"M":24,"S":45,"lat":43,"lng":-47,"Magnitude":1.9,"Comments":"Or lat -42 long -60"},{"Year":1972,"Day":2,"H":22,"M":29,"S":40,"lat":54,"lng":101,"Magnitude":1.9,"Comments":""},{"Year":1972,"Day":261,"H":14,"M":35,"S":55,"lat":12,"lng":46,"Magnitude":1,"Comments":""},{"Year":1972,"Day":341,"H":23,"M":8,"S":20,"lat":51,"lng":45,"Magnitude":1.4,"Comments":""},{"Year":1972,"Day":344,"H":3,"M":50,"S":15,"lat":-20,"lng":-80,"Magnitude":1.2,"Comments":""},{"Year":1973,"Day":39,"H":22,"M":52,"S":10,"lat":33,"lng":35,"Magnitude":0.8,"Comments":""},{"Year":1973,"Day":72,"H":7,"M":56,"S":30,"lat":-84,"lng":-134,"Magnitude":3.2,"Comments":""},{"Year":1973,"Day":171,"H":20,"M":22,"S":0,"lat":-1,"lng":-71,"Magnitude":2.2,"Comments":""},{"Year":1973,"Day":274,"H":3,"M":58,"S":0,"lat":-37,"lng":-29,"Magnitude":1.1,"Comments":""},{"Year":1974,"Day":54,"H":21,"M":16,"S":50,"lat":36,"lng":-16,"Magnitude":0.7,"Comments":""},{"Year":1974,"Day":86,"H":9,"M":11,"S":0,"lat":-48,"lng":-106,"Magnitude":1.6,"Comments":""},{"Year":1974,"Day":109,"H":13,"M":35,"S":15,"lat":-37,"lng":42,"Magnitude":0.9,"Comments":""},{"Year":1974,"Day":149,"H":20,"M":42,"S":15,"lat":"","lng":"","Magnitude":0.6,"Comments":"30 degrees from station 16 on east side of station"},{"Year":1974,"Day":192,"H":0,"M":46,"S":30,"lat":21,"lng":88,"Magnitude":2.7,"Comments":""},{"Year":1975,"Day":3,"H":1,"M":42,"S":0,"lat":29,"lng":-98,"Magnitude":3.2,"Comments":""},{"Year":1975,"Day":12,"H":3,"M":14,"S":10,"lat":75,"lng":40,"Magnitude":1.7,"Comments":""},{"Year":1975,"Day":13,"H":0,"M":26,"S":20,"lat":-2,"lng":-51,"Magnitude":1.1,"Comments":""},{"Year":1975,"Day":44,"H":22,"M":3,"S":50,"lat":-19,"lng":-26,"Magnitude":1.4,"Comments":""},{"Year":1975,"Day":127,"H":6,"M":37,"S":5,"lat":-49,"lng":-45,"Magnitude":1.3,"Comments":""},{"Year":1975,"Day":147,"H":23,"M":29,"S":0,"lat":3,"lng":-58,"Magnitude":1.4,"Comments":""},{"Year":1975,"Day":314,"H":7,"M":52,"S":55,"lat":-8,"lng":64,"Magnitude":1.8,"Comments":""},{"Year":1976,"Day":4,"H":11,"M":18,"S":55,"lat":50,"lng":30,"Magnitude":1.8,"Comments":""},{"Year":1976,"Day":12,"H":8,"M":18,"S":5,"lat":38,"lng":44,"Magnitude":1.1,"Comments":""},{"Year":1976,"Day":66,"H":10,"M":12,"S":40,"lat":50,"lng":-20,"Magnitude":2.3,"Comments":""},{"Year":1976,"Day":68,"H":14,"M":42,"S":10,"lat":-19,"lng":-12,"Magnitude":1.8,"Comments":""},{"Year":1976,"Day":137,"H":12,"M":32,"S":40,"lat":77,"lng":-10,"Magnitude":1.5,"Comments":""}];
 
-    let gData = [];
-    landers.forEach(probes => {
-        gData.push({
-            lat: probes.lat,
-            lng: probes.lng,
-            maxR: 5,
-            propagationSpeed: 1,
-            repeatPeriod: 1000
-        });
-    });
 
     const globe = GlobeAR()
         .globeImageUrl('mobile_map.jpg')
         .bumpImageUrl('mobile_displacement.jpg')
-        .labelText('label')
+        .labelText(d => d.Year.toString())
         .labelSize(5)
         .labelDotRadius(0.4)
         .labelDotOrientation(d => labelsTopOrientation.has(d.label) ? 'top' : 'bottom')
-        .labelColor(d => colorScale(d.agency))
-        .labelsData(landers)
-        .ringsData(gData)
-        .ringColor(() => colorInterpolator)
-        .ringMaxRadius('maxR')
-        .ringPropagationSpeed('propagationSpeed')
-        .ringRepeatPeriod('repeatPeriod')
+        .labelColor(d => {
+            if(d.Magnitude >= 2.5) return "red"
+            if(d.Magnitude <= 1.5) return "white"
+            if(d.Magnitude <= 2.5) return "yellow"
+        })
+        .labelsData(moonquakes)
+        .pointsData(moonquakes)
+        .pointLabel(d => `
+        <div style="background-color: black;padding: 10px; border-radius: 5px;">
+           <div><b>Moonquake Year - ${d.Year}</b></div>
+           <div>${d.Comments}</div>
+           <div>Lat,Lng: <i>${d.lat},${d.lng}</i></div>
+           <div>Period: <i>${d.Day} Days ${d.H} Hours ${d.M} Minutes ${d.S} Seconds</i></div>
+           <div>Magnitude: <i>${d.Magnitude}</i></div>
+        </div>
+        `)
+        .pointColor(d => {
+            if(d.Magnitude >= 2.5) return "red"
+            if(d.Magnitude <= 1.5) return "white"
+            if(d.Magnitude <= 2.5) return "yellow"
+        })
         (document.getElementById('globeViz'))
 
 </script>
