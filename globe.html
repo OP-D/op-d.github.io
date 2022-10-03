@@ -1,262 +1,262 @@
 <head>
-    <style> body { margin: 0; } </style>
-  
-    <script src="//unpkg.com/three"></script>
-    <script src="//unpkg.com/globe.gl"></script>
-    <script src="//unpkg.com/d3-array"></script>
-    <script src="//unpkg.com/d3-scale"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    
-  </head>
-  
-  <body>
-    <div style="z-index: 9;position: absolute;opacity: 0.9;">
-     <div class="card bg-dark text-white" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title text-center">Controls</h5>
-        <p class="card-body text-center">
-          <button type="button" class="btn btn-primary mb-1" onclick="Artificial()">Artificial Impact</button>
-          <button type="button" class="btn btn-info mb-1" onclick="Moonquake()">Moonquake Sensors</button>
-          <button type="button" class="btn btn-info mb-1" onclick="simulate()">Simulate Moonquake</button>
-          
-          <button type="button" class="btn btn-danger mb-1" onclick="Default()">Reset</button>
-          <button type="button" class="btn btn-danger mb-1" onclick="Pause()">Pause</button>
-          <button type="button" class="btn btn-danger mb-1" onclick="Resume()">Resume</button>
-          <table class="table table-dark" style="padding-left: 0;">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Moonquake ID</th>
-                <th scope="col">Time Took</th>
-                <th scope="col">View</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>#53F</td>
-                <td>3.2Days</td>
-                <td><a href="#">Click</a></td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>#A34</td>
-                <td>1.4Days</td>
-                <td><a href="#">Click</a></td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>#G3</td>
-                <td>6.0Days</td>
-                <td><a href="#">Click</a></td>
-              </tr>
-            </tbody>
-          </table>
-          Note: The image quality is low due to limited bandwidth.
-        </p>
-      </div>
-    </div>
-  </div>
-  <div style="z-index: 9;position: absolute;opacity: 0.9;right:0;">
+    <style> body {
+        margin: 0;
+    } </style>
+
+    <script src="https://unpkg.com/three"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
+    <script src="https://unpkg.com/d3-array"></script>
+    <script src="https://unpkg.com/d3-scale"></script>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" rel="stylesheet">
+    <title>Moon 3D</title>
+</head>
+
+<body>
+<div style="z-index: 9;position: absolute;opacity: 0.9;">
     <div class="card bg-dark text-white" style="width: 18rem;">
-     <div class="card-body">
-       <h5 class="card-title text-center">Moonquake Data</h5>
-       <p class="card-text">
-        <div>Lat: <a id="lat">N/A</a></div>
-        <div>Lng: <a id="lng">N/A</a></div>
-        <div>Richter Scale: <a id="ri">N/A</a></div>
-        <div>Time Length:<label id="minutes">00</label>:<label id="seconds">00</label></div>
-       </p>
-     </div>
-   </div>
- </div>
- 
-    <div id="globeViz"></div>
-  
-    <script>
-  
-      const lands = [
-  {
-    "lat": 0.6737,
-    "lng": 23.47295,
-    "label": "Apollo 11",
-    "program": "Apollo",
-    "agency": "NASA",
-    "date": "1969-7-20",
-    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_11_30th.html"
-  },
-  {
-    "lat": -3.01184,
-    "lng": -23.42156,
-    "label": "Apollo 12",
-    "program": "Apollo",
-    "agency": "NASA",
-    "date": "1969-11-19",
-    "url": "https://en.wikipedia.org/wiki/Apollo_12"
-  },
-  {
-    "lat": -3.64450,
-    "lng": -17.47753,
-    "label": "Apollo 14",
-    "program": "Apollo",
-    "agency": "NASA",
-    "date": "1971-2-5",
-    "url": "https://en.wikipedia.org/wiki/Apollo_14"
-  },
-  {
-    "lat": 26.13407,
-    "lng": 3.62981,
-    "label": "Apollo 15",
-    "program": "Apollo",
-    "agency": "NASA",
-    "date": "1971-7-30",
-    "url": "https://en.wikipedia.org/wiki/Apollo_15"
-  },
-  {
-    "lat": -8.97477,
-    "lng": 15.49749,
-    "label": "Apollo 16",
-    "program": "Apollo",
-    "agency": "NASA",
-    "date": "1972-4-21",
-    "url": "https://en.wikipedia.org/wiki/Apollo_16"
-  },
-  {
-    "lat": 20.18935,
-    "lng": 30.76996,
-    "label": "Apollo 17",
-    "program": "Apollo",
-    "agency": "NASA",
-    "date": "1972-12-11",
-    "url": "https://en.wikipedia.org/wiki/Apollo_17"
-  },
-  {
-    "lat": 29.1,
-    "lng": 0,
-    "label": "Luna 2",
-    "program": "Luna",
-    "agency": "Soviet Space Program",
-    "date": "1959-9-13",
-    "url": "https://en.wikipedia.org/wiki/Luna_2"
-  },
-  {
-    "lat": 7.08,
-    "lng": -64.37,
-    "label": "Luna 9",
-    "program": "Luna",
-    "agency": "Soviet Space Program",
-    "date": "1966-2-3",
-    "url": "https://en.wikipedia.org/wiki/Luna_9"
-  },
-  {
-    "lat": 18.87,
-    "lng": -62.05,
-    "label": "Luna 13",
-    "program": "Luna",
-    "agency": "Soviet Space Program",
-    "date": "1966-12-24",
-    "url": "https://en.wikipedia.org/wiki/Luna_13"
-  },
-  {
-    "lat": -0.68,
-    "lng": 56.3,
-    "label": "Luna 16",
-    "program": "Luna",
-    "agency": "Soviet Space Program",
-    "date": "1970-9-20",
-    "url": "https://en.wikipedia.org/wiki/Luna_16"
-  },
-  {
-    "lat": 38.28,
-    "lng": -35,
-    "label": "Luna 17",
-    "program": "Luna",
-    "agency": "Soviet Space Program",
-    "date": "1970-11-17",
-    "url": "https://en.wikipedia.org/wiki/Luna_17"
-  },
-  {
-    "lat": 3.57,
-    "lng": 56.5,
-    "label": "Luna 20",
-    "program": "Luna",
-    "agency": "Soviet Space Program",
-    "date": "1972-2-21",
-    "url": "https://en.wikipedia.org/wiki/Luna_20"
-  },
-  {
-    "lat": 25.51,
-    "lng": 30.38,
-    "label": "Luna 21",
-    "program": "Luna",
-    "agency": "Soviet Space Program",
-    "date": "1973-1-15",
-    "url": "https://en.wikipedia.org/wiki/Luna_21"
-  },
-  {
-    "lat": 12.25,
-    "lng": 62.2,
-    "label": "Luna 24",
-    "program": "Luna",
-    "agency": "Soviet Space Program",
-    "date": "1976-8-18",
-    "url": "https://en.wikipedia.org/wiki/Luna_24"
-  },
-  {
-    "lat": -84.72,
-    "lng": -49.62,
-    "label": "LCROSS Probe",
-    "program": "Lunar Crater Observation and Sensing Satellite",
-    "agency": "NASA",
-    "date": "2009-10-9",
-    "url": "https://en.wikipedia.org/wiki/LCROSS"
-  },
-  {
-    "lat": 44.12,
-    "lng": 19.51,
-    "label": "Chang'e 3",
-    "program": "Chinese Lunar Exploration",
-    "agency": "CNSA",
-    "date": "2013-12-14",
-    "url": "https://en.wikipedia.org/wiki/Chang%27e_3"
-  },
-  {
-    "lat": -45.4446,
-    "lng": 177.5991,
-    "label": "Chang'e 4",
-    "program": "Chinese Lunar Exploration",
-    "agency": "CNSA",
-    "date": "2019-1-3",
-    "url": "https://en.wikipedia.org/wiki/Chang%27e_4"
-  }
-];
+        <div class="card-body">
+            <h5 class="card-title text-center">Controls</h5>
+            <p class="card-body text-center">
+                <button class="btn btn-primary mb-1" onclick="Artificial()" type="button">Artificial Impact</button>
+                <button class="btn btn-info mb-1" onclick="Moonquake()" type="button">Moonquake Sensors</button>
+                <button class="btn btn-info mb-1" onclick="simulate()" type="button">Simulate Moonquake</button>
 
-      let gData = []; 
-      lands.forEach(probes => {
+                <button class="btn btn-danger mb-1" onclick="Default()" type="button">Reset</button>
+                <button class="btn btn-danger mb-1" onclick="Pause()" type="button">Pause</button>
+                <button class="btn btn-danger mb-1" onclick="Resume()" type="button">Resume</button>
+            <table class="table table-dark" style="padding-left: 0;">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Moonquake ID</th>
+                    <th scope="col">Time Took</th>
+                    <th scope="col">View</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>#53F</td>
+                    <td>3.2Days</td>
+                    <td><a href="#">Click</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>#A34</td>
+                    <td>1.4Days</td>
+                    <td><a href="#">Click</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>#G3</td>
+                    <td>6.0Days</td>
+                    <td><a href="#">Click</a></td>
+                </tr>
+                </tbody>
+            </table>
+            </p>
+        </div>
+    </div>
+</div>
+<div style="z-index: 9;position: absolute;opacity: 0.9;right:0;">
+    <div class="card bg-dark text-white" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title text-center">Moonquake Data</h5>
+            <p class="card-text">
+            <div>Lat: <a id="lat">N/A</a></div>
+            <div>Lng: <a id="lng">N/A</a></div>
+            <div>Richter Scale: <a id="ri">N/A</a></div>
+            <div>Time Length:<label id="minutes">00</label>:<label id="seconds">00</label></div>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div id="globeViz"></div>
+
+<script>
+
+    const lands = [
+        {
+            "lat": 0.6737,
+            "lng": 23.47295,
+            "label": "Apollo 11",
+            "program": "Apollo",
+            "agency": "NASA",
+            "date": "1969-7-20",
+            "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_11_30th.html"
+        },
+        {
+            "lat": -3.01184,
+            "lng": -23.42156,
+            "label": "Apollo 12",
+            "program": "Apollo",
+            "agency": "NASA",
+            "date": "1969-11-19",
+            "url": "https://en.wikipedia.org/wiki/Apollo_12"
+        },
+        {
+            "lat": -3.64450,
+            "lng": -17.47753,
+            "label": "Apollo 14",
+            "program": "Apollo",
+            "agency": "NASA",
+            "date": "1971-2-5",
+            "url": "https://en.wikipedia.org/wiki/Apollo_14"
+        },
+        {
+            "lat": 26.13407,
+            "lng": 3.62981,
+            "label": "Apollo 15",
+            "program": "Apollo",
+            "agency": "NASA",
+            "date": "1971-7-30",
+            "url": "https://en.wikipedia.org/wiki/Apollo_15"
+        },
+        {
+            "lat": -8.97477,
+            "lng": 15.49749,
+            "label": "Apollo 16",
+            "program": "Apollo",
+            "agency": "NASA",
+            "date": "1972-4-21",
+            "url": "https://en.wikipedia.org/wiki/Apollo_16"
+        },
+        {
+            "lat": 20.18935,
+            "lng": 30.76996,
+            "label": "Apollo 17",
+            "program": "Apollo",
+            "agency": "NASA",
+            "date": "1972-12-11",
+            "url": "https://en.wikipedia.org/wiki/Apollo_17"
+        },
+        {
+            "lat": 29.1,
+            "lng": 0,
+            "label": "Luna 2",
+            "program": "Luna",
+            "agency": "Soviet Space Program",
+            "date": "1959-9-13",
+            "url": "https://en.wikipedia.org/wiki/Luna_2"
+        },
+        {
+            "lat": 7.08,
+            "lng": -64.37,
+            "label": "Luna 9",
+            "program": "Luna",
+            "agency": "Soviet Space Program",
+            "date": "1966-2-3",
+            "url": "https://en.wikipedia.org/wiki/Luna_9"
+        },
+        {
+            "lat": 18.87,
+            "lng": -62.05,
+            "label": "Luna 13",
+            "program": "Luna",
+            "agency": "Soviet Space Program",
+            "date": "1966-12-24",
+            "url": "https://en.wikipedia.org/wiki/Luna_13"
+        },
+        {
+            "lat": -0.68,
+            "lng": 56.3,
+            "label": "Luna 16",
+            "program": "Luna",
+            "agency": "Soviet Space Program",
+            "date": "1970-9-20",
+            "url": "https://en.wikipedia.org/wiki/Luna_16"
+        },
+        {
+            "lat": 38.28,
+            "lng": -35,
+            "label": "Luna 17",
+            "program": "Luna",
+            "agency": "Soviet Space Program",
+            "date": "1970-11-17",
+            "url": "https://en.wikipedia.org/wiki/Luna_17"
+        },
+        {
+            "lat": 3.57,
+            "lng": 56.5,
+            "label": "Luna 20",
+            "program": "Luna",
+            "agency": "Soviet Space Program",
+            "date": "1972-2-21",
+            "url": "https://en.wikipedia.org/wiki/Luna_20"
+        },
+        {
+            "lat": 25.51,
+            "lng": 30.38,
+            "label": "Luna 21",
+            "program": "Luna",
+            "agency": "Soviet Space Program",
+            "date": "1973-1-15",
+            "url": "https://en.wikipedia.org/wiki/Luna_21"
+        },
+        {
+            "lat": 12.25,
+            "lng": 62.2,
+            "label": "Luna 24",
+            "program": "Luna",
+            "agency": "Soviet Space Program",
+            "date": "1976-8-18",
+            "url": "https://en.wikipedia.org/wiki/Luna_24"
+        },
+        {
+            "lat": -84.72,
+            "lng": -49.62,
+            "label": "LCROSS Probe",
+            "program": "Lunar Crater Observation and Sensing Satellite",
+            "agency": "NASA",
+            "date": "2009-10-9",
+            "url": "https://en.wikipedia.org/wiki/LCROSS"
+        },
+        {
+            "lat": 44.12,
+            "lng": 19.51,
+            "label": "Chang'e 3",
+            "program": "Chinese Lunar Exploration",
+            "agency": "CNSA",
+            "date": "2013-12-14",
+            "url": "https://en.wikipedia.org/wiki/Chang%27e_3"
+        },
+        {
+            "lat": -45.4446,
+            "lng": 177.5991,
+            "label": "Chang'e 4",
+            "program": "Chinese Lunar Exploration",
+            "agency": "CNSA",
+            "date": "2019-1-3",
+            "url": "https://en.wikipedia.org/wiki/Chang%27e_4"
+        }
+    ];
+
+    let gData = [];
+    lands.forEach(probes => {
         gData.push({
-          lat: probes.lat,
-          lng: probes.lng,
-          maxR: 5,
-          propagationSpeed: 1,
-          repeatPeriod: 1000
+            lat: probes.lat,
+            lng: probes.lng,
+            maxR: 5,
+            propagationSpeed: 1,
+            repeatPeriod: 1000
         })
-      })
+    })
 
 
-      const colorInterpolator = t => `rgba(255,100,50,${Math.sqrt(1-t)})`;
-  
+    const colorInterpolator = t => `rgba(255,100,50,${Math.sqrt(1 - t)})`;
 
-      const colorScale = d3.scaleOrdinal(['orangered', 'mediumblue', 'darkgreen', 'yellow']);
 
-      const weightColor = d3.scaleLinear()
-      .domain([0, 60])
-      .range(['lightblue', 'darkred'])
-      .clamp(true);
+    const colorScale = d3.scaleOrdinal(['orangered', 'mediumblue', 'darkgreen', 'yellow']);
+    d3.scaleLinear()
+        .domain([0, 60])
+        .range(['lightblue', 'darkred'])
+        .clamp(true);
+    const labelsTopOrientation = new Set(['Apollo 12', 'Luna 2', 'Luna 20', 'Luna 21', 'Luna 24', 'LCROSS Probe']); // avoid label collisions
 
-      const labelsTopOrientation = new Set(['Apollo 12', 'Luna 2', 'Luna 20', 'Luna 21', 'Luna 24', 'LCROSS Probe']); // avoid label collisions
 
-      
-      const globe = Globe()
+    const globe = Globe()
         .globeImageUrl('mobile_map.jpg')
         .bumpImageUrl('mobile_displacement.jpg')
         .backgroundImageUrl("//unpkg.com/three-globe/example/img/night-sky.png")
@@ -267,190 +267,150 @@
         .ringRepeatPeriod('repeatPeriod')
         .showAtmosphere(true)
         .atmosphereColor("white")
-        .onGlobeReady(()=>{
-          setTimeout(() => {
-          globe.scene().children[1].intensity = 0.9
-        })})
+        .onGlobeReady(() => {
+            setTimeout(() => {
+                globe.scene().children[1].intensity = 0.9
+            })
+        })
         .labelText('label')
         .labelSize(1.7)
         .labelDotRadius(0.4)
         .labelDotOrientation(d => labelsTopOrientation.has(d.label) ? 'top' : 'bottom')
         .labelColor(d => colorScale(d.agency))
-        .labelLabel(d => `
-        <div style="background-color: black;padding: 10px; border-radius: 5px;">
-            <div><b>${d.label}</b></div>
-            <div>${d.agency} - ${d.program} Program</div>
-            <div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div>
-          </div>
-            `)
+        .labelLabel(d => `<div style="background-color: black;padding: 10px; border-radius: 5px;"><div><b>${d.label}</b></div><div>${d.agency} - ${d.program} Program</div><div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div></div>`)
         .onLabelClick(d => window.open(d.url, '_blank'))
         .pointsData([])
-        .pointLabel(d => `
-          <div style="background-color: black;padding: 10px; border-radius: 5px;">
-              <div><b>${d.label}</b></div>
-              <div>${d.agency} - ${d.program} Program</div>
-              <div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div>
-            </div>
-        `)
+        .pointLabel(d => `<div style="background-color: black;padding: 10px; border-radius: 5px;"><div><b>${d.label}</b></div><div>${d.agency} - ${d.program} Program</div><div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div></div>`)
         .arcColor(() => "red")
         .arcDashLength(() => Math.random())
         .arcDashGap(() => Math.random())
         .arcDashAnimateTime(() => Math.random() * 4000 + 500)
         (document.getElementById('globeViz'));
-  
 
-        const globeMaterial = globe.globeMaterial();
-        globeMaterial.bumpScale = 500;
-        new THREE.TextureLoader().load('mobile_displacement.jpg', texture => {
-          globeMaterial.specularMap = texture;
-          globeMaterial.specular = new THREE.Color('grey');
-          globeMaterial.shininess = 0;
-        });
 
+    const globeMaterial = globe.globeMaterial();
+    globeMaterial.bumpScale = 500;
+    new THREE.TextureLoader().load('mobile_displacement.jpg', texture => {
+        globeMaterial.specularMap = texture;
+        globeMaterial.specular = new THREE.Color('grey');
+        globeMaterial.shininess = 0;
+    });
+
+    globe.labelsData(lands);
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 0.6;
+
+    function Artificial() {
         globe.labelsData(lands);
+        globe.pointsData(lands)
+        globe.controls().autoRotate = false;
+    }
+
+    function Default() {
+        globe.labelsData([]);
+        globe.ringsData([]);
+        globe.pointsData([])
         globe.controls().autoRotate = true;
-        globe.controls().autoRotateSpeed = 0.6;
-        
-        function Artificial(){
-          globe.labelsData(lands);
-          globe.pointsData(lands)
-          globe.controls().autoRotate = false;
-        }
+        globe.labelLabel(d => `<div style="background-color: black;padding: 10px; border-radius: 5px;"><div><b>${d.label}</b></div><div>${d.agency} - ${d.program} Program</div><div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div></div>`)
+        globe.pointLabel(d => `<div style="background-color: black;padding: 10px; border-radius: 5px;"><div><b>${d.label}</b></div><div>${d.agency} - ${d.program} Program</div><div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div></div>`)
+    }
 
-        function Default(){
-          globe.labelsData([]);
-          globe.ringsData([]);
-          globe.pointsData([])
-          globe.controls().autoRotate = true;
-          globe.labelLabel(d => `
-        <div style="background-color: black;padding: 10px; border-radius: 5px;">
-            <div><b>${d.label}</b></div>
-            <div>${d.agency} - ${d.program} Program</div>
-            <div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div>
-          </div>
-            `)
-            globe.pointLabel(d => `
-        <div style="background-color: black;padding: 10px; border-radius: 5px;">
-            <div><b>${d.label}</b></div>
-            <div>${d.agency} - ${d.program} Program</div>
-            <div>Landing on <i>${new Date(d.date).toLocaleDateString()}</i></div>
-          </div>
-            `)
-        }
+    function Resume() {
+        globe.controls().autoRotate = true;
+    }
 
-        function Resume(){
-          globe.controls().autoRotate = true;
-        }
-        function Pause(){
-          globe.controls().autoRotate = false;
-        }
+    function Pause() {
+        globe.controls().autoRotate = false;
+    }
 
-        function Moonquake(){
-        
-          fetch('/moonquake.json')
+    function Moonquake() {
+
+        fetch('/moonquake.json')
             .then((response) => response.json())
             .then((data) => {
                 let stations = [];
                 let moonquakesData = []
                 data.forEach(quake => {
-                  if(stations.includes(quake.Station)) return;
-                  stations.push(quake.Station)
-                  moonquakesData.push({
-                    lat: quake.lat,
-                    lng: quake.lng,
-                    label: quake.Station,
-                    desc: quake.SensorDescription,
-                    Elevation: quake.Elevation,
-                    sdate: quake.StartTime,
-                    edate: quake.EndTime,
-                    maxR: 5,
-                    propagationSpeed: 1,
-                    repeatPeriod: 1000
-                  })
+                    if (stations.includes(quake.Station)) return;
+                    stations.push(quake.Station)
+                    moonquakesData.push({
+                        lat: quake.lat,
+                        lng: quake.lng,
+                        label: quake.Station,
+                        desc: quake.SensorDescription,
+                        Elevation: quake.Elevation,
+                        sdate: quake.StartTime,
+                        edate: quake.EndTime,
+                        maxR: 5,
+                        propagationSpeed: 1,
+                        repeatPeriod: 1000
+                    })
                 })
-                console.log(moonquakesData)
-              globe.ringsData(moonquakesData)
-              globe.labelLabel(d => `
-        <div style="background-color: black;padding: 10px; border-radius: 5px;">
-            <div><b>${d.label}</b></div>
-            <div>${d.desc}</div>
-            <div>Elevation - ${d.Elevation}</div>
-            <div>Start time <i>${new Date(d.sdate).toLocaleDateString()}</i></div>
-            <div>End time <i>${new Date(d.edate).toLocaleDateString()}</i></div>
-          </div>
-            `)
-              globe.labelsData(moonquakesData)  
-              globe.pointsData(moonquakesData)
-              globe.pointLabel(d => `
-        <div style="background-color: black;padding: 10px; border-radius: 5px;">
-            <div><b>${d.label}</b></div>
-            <div>${d.desc}</div>
-            <div>Elevation - ${d.Elevation}</div>
-            <div>Start time <i>${new Date(d.sdate).toLocaleDateString()}</i></div>
-            <div>End time <i>${new Date(d.edate).toLocaleDateString()}</i></div>
-          </div>
-            `)
-            const arcs = [
-              {
-                startLat: 0.67416,
-                startLng: 23.473146,
-                endLat: -3.6445,
-                endLng: -17.47753,
-                color: "red"
-              },
-              {
-                startLat: -3.6445,
-                startLng: -17.47753,
-                endLat: 26.13407,
-                endLng: 3.62981,
-              },
-              {
-                startLat: 26.13407,
-                startLng: 3.62981,
-                endLat: 0.67416,
-                endLng: 23.473146
-              }
-            ];
-            globe.arcsData(arcs)
+                globe.ringsData(moonquakesData)
+                globe.labelLabel(d => `<div style="background-color: black;padding: 10px; border-radius: 5px;"><div><b>${d.label}</b></div><div>${d.desc}</div><div>Elevation - ${d.Elevation}</div><div>Start time <i>${new Date(d.sdate).toLocaleDateString()}</i></div><div>End time <i>${new Date(d.edate).toLocaleDateString()}</i></div></div>`)
+                globe.labelsData(moonquakesData)
+                globe.pointsData(moonquakesData)
+                globe.pointLabel(d => `<div style="background-color: black;padding: 10px; border-radius: 5px;"><div><b>${d.label}</b></div><div>${d.desc}</div><div>Elevation - ${d.Elevation}</div><div>Start time <i>${new Date(d.sdate).toLocaleDateString()}</i></div><div>End time <i>${new Date(d.edate).toLocaleDateString()}</i></div></div>`)
+                const arcs = [
+                    {
+                        startLat: 0.67416,
+                        startLng: 23.473146,
+                        endLat: -3.6445,
+                        endLng: -17.47753,
+                        color: "red"
+                    },
+                    {
+                        startLat: -3.6445,
+                        startLng: -17.47753,
+                        endLat: 26.13407,
+                        endLng: 3.62981,
+                    },
+                    {
+                        startLat: 26.13407,
+                        startLng: 3.62981,
+                        endLat: 0.67416,
+                        endLng: 23.473146
+                    }
+                ];
+                globe.arcsData(arcs)
 
-          })
+            })
+    }
+
+    function simulate() {
+        const ripples = [{
+            lat: (Math.random() - 0.5) * 180,
+            lng: (Math.random() - 0.5) * 360,
+            maxR: 10,
+            propagationSpeed: 1,
+            repeatPeriod: 1
+        }]
+        document.getElementById("lat").innerText = ripples[0]["lat"]
+        document.getElementById("lng").innerText = ripples[0]["lng"]
+        document.getElementById("ri").innerText = "3.2"
+        globe.ringsData(ripples)
+        const minutesLabel = document.getElementById("minutes");
+        const secondsLabel = document.getElementById("seconds");
+        let totalSeconds = 0;
+        setInterval(setTime, 1000);
+
+        function setTime() {
+            ++totalSeconds;
+            secondsLabel.innerHTML = pad(totalSeconds % 60);
+            minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
         }
 
-          function simulate(){
-            const ripples = [{
-                  lat: (Math.random() - 0.5) * 180,
-                  lng: (Math.random() - 0.5) * 360,
-                  maxR: 10,
-                  propagationSpeed: 1,
-                  repeatPeriod: 1
-                }]
-            document.getElementById("lat").innerText = ripples[0]["lat"]
-            document.getElementById("lng").innerText = ripples[0]["lng"]
-            document.getElementById("ri").innerText = "3.2"
-            globe.ringsData(ripples)
-            var minutesLabel = document.getElementById("minutes");
-            var secondsLabel = document.getElementById("seconds");
-            var totalSeconds = 0;
-            setInterval(setTime, 1000);
-
-            function setTime() {
-              ++totalSeconds;
-              secondsLabel.innerHTML = pad(totalSeconds % 60);
-              minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
-            }
-
-            function pad(val) {
-              var valString = val + "";
-              if (valString.length < 2) {
+        function pad(val) {
+            const valString = val + "";
+            if (valString.length < 2) {
                 return "0" + valString;
-              } else {
+            } else {
                 return valString;
-              }
             }
+        }
 
-          }
-        
+    }
 
 
-    </script>
-  </body>
+</script>
+</body>
